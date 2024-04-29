@@ -1,0 +1,44 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.custom-spring-cloud-netflix-server'
+version = '0.0.1-SNAPSHOT'
+
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	mavenLocal()
+	// maven { -- uncomment me 
+    //     url 'my_jfrog_url'
+    // }
+	mavenCentral()
+}
+
+dependencies {
+	// Local Implementation
+    implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:4.1.1-SNAPSHOT')
+	// Cloud JFrog deploy as 4.1.1 not 4.1.1-SNAPSHOT
+	// implementation ('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:4.1.1')
+
+    implementation ('org.springframework.boot:spring-boot-starter-web')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
+	}
+}
+// change docker to not build with nebula thats why snapshot does not exist on eureke-core but I assure you it is working
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
